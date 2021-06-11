@@ -1,4 +1,4 @@
-7//initialise array of 1000 with int bool
+//initialise array of 1000 with int bool
 let bottles = new Array(1000).fill(0)
 //Randomly decide which bottle between 0-999 to poison
 let poisonRandomBottle = Math.floor(Math.random() * 1000)
@@ -6,18 +6,22 @@ bottles[poisonRandomBottle] = 1
 // this will allow us to check if the evaluator is getting the right bottle index at the end
 
 class Prisoner {
-    name = "Prisoner"
+    //Properties
+    name = "Prisoner"  
     isAlive = 1;
     exponentValue = 0;
     exponentResult = 0
     indiciesOfBottlesDrank = [];
 
     constructor(exponentValue, name) {
+        //initializes the values for the sequence
         this.exponentValue = exponentValue
-        this.name = "Prisoner " + name
         this.exponentResult = (2 ** exponentValue)
+        //sets prisoner name for user clarity in the console output
+        this.name = "Prisoner " + name
     }
 
+    //Methods
     givePrisonerWine(bottles) {
         let selectionUpperLimit = 2 ** this.exponentValue
         let selectionLowerLimit = 0
@@ -25,8 +29,9 @@ class Prisoner {
         let finishedDrinking = false
 
         while (finishedDrinking === false) {
+
             for (indexToSelect; (indexToSelect < Math.min(1000, selectionUpperLimit)) &&
-                (indexToSelect >= selectionLowerLimit); indexToSelect++) {
+                (indexToSelect >= selectionLowerLimit); indexToSelect++) { 
                 this.indiciesOfBottlesDrank.push(bottles[indexToSelect])
             }
             selectionLowerLimit += 2 * (2 ** this.exponentValue)
@@ -34,12 +39,14 @@ class Prisoner {
             indexToSelect = selectionLowerLimit
             finishedDrinking = selectionUpperLimit >= 999
         }
+        //re-initializing the values between iterations of the for loop
         indexToSelect = 0
         selectionLowerLimit = 0
         selectionUpperLimit = 0
         return this.indiciesOfBottlesDrank
     }
 
+    //checks whether every entry(bottlesDrank) == 0 and not poisoned, else prisoner dies.
     isPrisonerAliveAfter24Hours() {
         let isItPoisoned = (currentValue) => currentValue == 0
         if (this.indiciesOfBottlesDrank.every(isItPoisoned)) {
@@ -67,11 +74,15 @@ function poisonedBottle(prisonerArray, bottles) {
 
     })
 
-    //it will then return and int which is the index of the poisoned bottle
+    //it will then return an int which is the index of the poisoned bottle
     return poisonedBottleIndex
 
 }
 
+// A Prisoner factory, that creates an array and
+// populates it with a number of prisoner objects
+// equal to int parameter passed and sets their
+// exponent value incrementally
 function createArrayOfPrisonerObjects(numberOfPrisoners) {
     let arrayOfPrisonerObjects = []
     for (i = 0; i < numberOfPrisoners; i++) {
@@ -82,6 +93,7 @@ function createArrayOfPrisonerObjects(numberOfPrisoners) {
 }
 
 
+//running it will 10 prisoner objects
 let prisonersArray = createArrayOfPrisonerObjects(10)
 let result = poisonedBottle(prisonersArray, bottles)
 
